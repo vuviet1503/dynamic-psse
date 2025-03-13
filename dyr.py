@@ -1,6 +1,4 @@
 
-
-
 import os, sys
 # import psse35
 import pandas as pd
@@ -56,7 +54,7 @@ def input_grid(file):
         ibus, jbus, r, x, g, b, rate = row
         ierr, realaro = psspy.two_winding_data_6(ibus = int(ibus), jbus = int(jbus), realari = [r, x], ratings = [rate])
 
-    ierr = psspy.save("test.sav")
+    ierr = psspy.save("test.raw")
 
 
 def dynamics():
@@ -64,11 +62,14 @@ def dynamics():
     import psspy
     import dyntools 
 
-    ierr = psspy.case("test.sav")
+    # open psse
+    ierr = psspy.case("test.raw")
+    # load flow
     ierr = psspy.fdns([0,0,0,1,1,0,99,0])
-    psspy.cong(0)
-    psspy.conl(0,1,1,[0,0],[ 100.0,0.0,0.0, 100.0])
-    psspy.conl(0,1,2,[0,0],[ 100.0,0.0,0.0, 100.0])
+
+    ierr = psspy.cong(0)
+    ierr = psspy.conl(0,1,1,[0,0],[ 100.0,0.0,0.0, 100.0])
+    ierr = psspy.conl(0,1,2,[0,0],[ 100.0,0.0,0.0, 100.0])
     psspy.conl(0,1,3,[0,0],[ 100.0,0.0,0.0, 100.0])
     psspy.ordr(1)
     psspy.fact()
